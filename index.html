@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:," />
+    <title>Squeek Aura Checklist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #16110d;
+        --bg-soft: #1d1712;
+        --panel: #241c15;
+        --panel-2: #2c2219;
+        --line: #403325;
+        --line-soft: #33291d;
+        --text: #f4ead9;
+        --muted: #bfae94;
+        --faint: #8d7c64;
+        --amber: #f2a33c;
+        --amber-deep: #d98324;
+        --cheek: #ff9d76;
+        --green: #8fce6e;
+        --red: #ef7d6b;
+        --radius: 14px;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1, h2, h3, .display { font-family: "Baloo 2", "Nunito Sans", system-ui, sans-serif; }
+      a { color: var(--amber); }
+      .wrap { max-width: 1060px; margin: 0 auto; padding: 0 18px 64px; }
+
+      /* ---------- Hero ---------- */
+      .hero { padding: 34px 0 8px; display: flex; gap: 18px; align-items: flex-start; }
+      .hero-text { flex: 1; min-width: 0; }
+      .hero h1 { font-size: clamp(30px, 6vw, 44px); line-height: 1.05; margin: 0 0 8px; font-weight: 800; letter-spacing: -0.01em; }
+      .hero h1 .accent { color: var(--amber); }
+      .hero p { margin: 0; color: var(--muted); max-width: 56ch; }
+      .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+      .pill {
+        font-size: 12.5px; font-weight: 700; color: var(--muted);
+        border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px;
+        background: var(--bg-soft);
+      }
+      .pill b { color: var(--amber); font-weight: 800; }
+      .hamster { flex: none; width: 92px; height: 92px; margin-top: 4px; }
+      @media (max-width: 560px) { .hamster { width: 64px; height: 64px; } .hero { gap: 12px; } }
+
+      /* ---------- Sections ---------- */
+      section { margin-top: 38px; }
+      .sec-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+      .sec-head h2 { font-size: 24px; margin: 0; font-weight: 800; }
+      .sec-head .step {
+        font-family: "Baloo 2", sans-serif; font-size: 13px; font-weight: 800; color: #1d1408;
+        background: var(--amber); border-radius: 8px; padding: 2px 9px;
+      }
+      .sec-sub { color: var(--muted); margin: 0 0 16px; max-width: 68ch; }
+      .card {
+        background: var(--panel); border: 1px solid var(--line-soft);
+        border-radius: var(--radius); padding: 18px;
+      }
+
+      /* ---------- Forms ---------- */
+      .row { display: flex; gap: 10px; flex-wrap: wrap; }
+      .row > * { min-width: 0; }
+      input[type="text"], textarea {
+        flex: 1 1 260px; background: var(--bg-soft); color: var(--text);
+        border: 1px solid var(--line); border-radius: 10px;
+        padding: 11px 13px; font: inherit; font-size: 15px;
+      }
+      textarea { flex-basis: 100%; min-height: 110px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+      input[type="text"]:focus, textarea:focus { outline: 2px solid var(--amber-deep); outline-offset: 1px; border-color: var(--amber-deep); }
+      button {
+        font: inherit; font-weight: 800; cursor: pointer; border-radius: 10px;
+        border: 1px solid var(--amber-deep); background: var(--amber); color: #221503;
+        padding: 11px 18px;
+      }
+      button:hover { background: #f7b45c; }
+      button.ghost { background: transparent; color: var(--amber); border-color: var(--line); }
+      button.ghost:hover { border-color: var(--amber); background: var(--panel-2); }
+      button:disabled { opacity: .55; cursor: wait; }
+      .hint { font-size: 13.5px; color: var(--faint); margin-top: 10px; }
+      .hint code { color: var(--muted); word-break: break-all; }
+      .status { margin-top: 12px; font-size: 14.5px; min-height: 1.2em; }
+      .status.err { color: var(--red); }
+      .status.ok { color: var(--green); }
+
+      /* ---------- Stat grid ---------- */
+      .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
+      .stat { background: var(--panel-2); border: 1px solid var(--line-soft); border-radius: 12px; padding: 13px 14px; }
+      .stat .k { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--faint); }
+      .stat .v { font-family: "Baloo 2", sans-serif; font-size: 24px; font-weight: 800; line-height: 1.15; margin-top: 2px; word-break: break-word; }
+      .stat .s { font-size: 12.5px; color: var(--muted); margin-top: 2px; word-break: break-all; }
+      .addr-line { margin-top: 14px; font-size: 13.5px; color: var(--muted); word-break: break-all; }
+      .addr-line b { color: var(--text); }
+
+      /* ---------- Profile ---------- */
+      .profile-head { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+      .avatar {
+        width: 52px; height: 52px; border-radius: 50%; flex: none;
+        background: var(--amber); color: #221503; display: grid; place-items: center;
+        font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 22px;
+      }
+      .profile-head .name { font-family: "Baloo 2", sans-serif; font-size: 21px; font-weight: 800; line-height: 1.2; }
+      .profile-head .handle { color: var(--muted); font-size: 14px; }
+      .tierbar { height: 10px; background: var(--bg-soft); border: 1px solid var(--line-soft); border-radius: 999px; overflow: hidden; margin-top: 6px; }
+      .tierbar > div { height: 100%; background: var(--amber); border-radius: 999px; }
+      .ach-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+      .ach {
+        border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px;
+        font-size: 13.5px; font-weight: 700; color: var(--faint); background: var(--bg-soft);
+      }
+      .ach.earned { border-color: var(--amber-deep); color: var(--amber); background: rgba(242,163,60,.1); }
+      .subhead { font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 16px; margin: 18px 0 4px; }
+
+      /* ---------- Badges ---------- */
+      .progress-line { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+      .progress-line .count { font-family: "Baloo 2", sans-serif; font-size: 19px; font-weight: 800; }
+      .progress-line .bar { flex: 1 1 180px; height: 10px; background: var(--panel); border: 1px solid var(--line-soft); border-radius: 999px; overflow: hidden; }
+      .progress-line .bar > div { height: 100%; background: var(--green); width: 0%; transition: width .25s ease; }
+      .lane-title { display: flex; align-items: baseline; gap: 10px; margin: 22px 0 10px; }
+      .lane-title h3 { margin: 0; font-size: 19px; font-weight: 800; text-transform: capitalize; }
+      .lane-title span { color: var(--faint); font-size: 13.5px; }
+      .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
+      .badge {
+        display: flex; gap: 12px; background: var(--panel); border: 1px solid var(--line-soft);
+        border-radius: 12px; padding: 14px;
+      }
+      .badge.ticked { border-color: var(--amber-deep); }
+      .badge.earned { box-shadow: inset 3px 0 0 var(--green); }
+      .badge input[type="checkbox"] {
+        appearance: none; flex: none; width: 24px; height: 24px; margin: 2px 0 0;
+        border: 2px solid var(--line); border-radius: 7px; background: var(--bg-soft); cursor: pointer;
+        display: grid; place-items: center;
+      }
+      .badge input[type="checkbox"]:checked { background: var(--amber); border-color: var(--amber-deep); }
+      .badge input[type="checkbox"]:checked::after { content: "✓"; color: #221503; font-weight: 900; font-size: 15px; line-height: 1; }
+      .badge input[type="checkbox"]:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+      .badge .body { min-width: 0; flex: 1; }
+      .badge .title { font-weight: 800; font-size: 15.5px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+      .tag { font-size: 11px; font-weight: 800; letter-spacing: .03em; padding: 2px 7px; border-radius: 999px; }
+      .tag.trophy { background: rgba(255,157,118,.16); color: var(--cheek); border: 1px solid rgba(255,157,118,.4); }
+      .tag.owned { background: rgba(143,206,110,.14); color: var(--green); border: 1px solid rgba(143,206,110,.4); }
+      .badge .desc { color: var(--muted); font-size: 13.5px; margin-top: 3px; }
+      .badge ul { margin: 8px 0 0; padding-left: 17px; color: var(--muted); font-size: 13px; }
+      .badge ul li { margin-top: 2px; }
+      .badge .holders { margin-top: 9px; font-size: 12.5px; color: var(--faint); font-weight: 700; }
+      .badge .holders b { color: var(--muted); }
+
+      /* ---------- Leaderboard ---------- */
+      .lb { display: grid; gap: 8px; margin-top: 14px; }
+      .lb-row {
+        display: flex; align-items: center; gap: 13px; background: var(--panel);
+        border: 1px solid var(--line-soft); border-radius: 12px; padding: 10px 14px;
+      }
+      .lb-rank { font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 19px; width: 30px; text-align: center; color: var(--faint); flex: none; }
+      .lb-row:nth-child(1) .lb-rank { color: var(--amber); }
+      .lb-row:nth-child(2) .lb-rank, .lb-row:nth-child(3) .lb-rank { color: var(--cheek); }
+      .lb-id { flex: 1; min-width: 0; }
+      .lb-id .n { font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .lb-id .u { color: var(--faint); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .lb-meta { text-align: right; flex: none; }
+      .lb-meta .aura { font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 18px; color: var(--amber); }
+      .lb-meta .sub { font-size: 12px; color: var(--faint); }
+      .tier-chip { font-size: 11px; font-weight: 800; text-transform: capitalize; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
+
+      footer { margin-top: 52px; border-top: 1px solid var(--line-soft); padding-top: 22px; color: var(--muted); font-size: 14.5px; }
+      footer h2 { color: var(--text); font-size: 19px; margin: 0 0 8px; }
+      footer ul { padding-left: 18px; }
+      footer li { margin-top: 4px; word-break: break-all; }
+      .foot-note { color: var(--faint); font-size: 13px; margin-top: 14px; }
+      .hidden { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <header class="hero">
+        <div class="hero-text">
+          <h1>Squeek <span class="accent">Aura</span> Checklist</h1>
+          <p>Tool read-only buat member Squeekchain Genesis: cek isi dompet Sepolia, pantau progres Aura &amp; tier profil Genesis kamu, dan centang badge yang lagi kamu kejar. Tanpa connect wallet, tanpa transaksi, tanpa kunci apa pun.</p>
+          <div class="hero-badges">
+            <span class="pill">Jaringan <b>Sepolia testnet</b></span>
+            <span class="pill">Sifat <b>Read-only</b></span>
+            <span class="pill">Data <b>Live dari API resmi</b></span>
+          </div>
+        </div>
+        <svg class="hamster" viewBox="0 0 100 100" role="img" aria-label="Hamster Squeekchain">
+          <circle cx="24" cy="24" r="13" fill="#8a6844"/>
+          <circle cx="76" cy="24" r="13" fill="#8a6844"/>
+          <circle cx="24" cy="24" r="7" fill="#ff9d76"/>
+          <circle cx="76" cy="24" r="7" fill="#ff9d76"/>
+          <circle cx="50" cy="54" r="38" fill="#c98d54"/>
+          <ellipse cx="31" cy="62" rx="11" ry="9" fill="#ff9d76" opacity=".75"/>
+          <ellipse cx="69" cy="62" rx="11" ry="9" fill="#ff9d76" opacity=".75"/>
+          <circle cx="38" cy="48" r="4.5" fill="#221503"/>
+          <circle cx="62" cy="48" r="4.5" fill="#221503"/>
+          <ellipse cx="50" cy="59" rx="5" ry="4" fill="#221503"/>
+          <path d="M50 63 q0 5 -6 6 M50 63 q0 5 6 6" stroke="#221503" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <path d="M14 56 h10 M15 66 l9 -2 M86 56 h-10 M85 66 l-9 -2" stroke="#e8d9bd" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+        </svg>
+      </header>
+
+      <!-- 1. Wallet dashboard -->
+      <section id="wallet">
+        <div class="sec-head"><span class="step">1</span><h2>Dashboard Wallet</h2></div>
+        <p class="sec-sub">Tempel alamat wallet Sepolia kamu untuk melihat token, power, stake, dan SQK yang bisa di-claim — langsung dari API Squeekchain. Alamat cuma dibaca, tidak ada yang ditandatangani.</p>
+        <div class="card">
+          <form class="row" id="wallet-form">
+            <input type="text" id="wallet-input" placeholder="0x… alamat wallet Sepolia" autocomplete="off" spellcheck="false" aria-label="Alamat wallet Sepolia" />
+            <button type="submit" id="wallet-btn">Cek Wallet</button>
+            <button type="button" class="ghost" id="wallet-demo">Demo: wallet burner publik</button>
+          </form>
+          <div class="status" id="wallet-status" role="status"></div>
+          <div id="wallet-result" class="hidden">
+            <div class="addr-line">Alamat: <b id="w-address"></b> · <span id="w-meta"></span></div>
+            <div class="stats">
+              <div class="stat"><div class="k">Claimable SQK</div><div class="v" id="w-claimable">–</div><div class="s" id="w-claimable-raw"></div></div>
+              <div class="stat"><div class="k">Power (NFT + SQK)</div><div class="v" id="w-power">–</div><div class="s" id="w-power-sub"></div></div>
+              <div class="stat"><div class="k">Stake Principal</div><div class="v" id="w-stake">–</div><div class="s" id="w-stake-sub"></div></div>
+              <div class="stat"><div class="k">Token di Wallet</div><div class="v" id="w-tokens">–</div><div class="s" id="w-tokens-sub"></div></div>
+              <div class="stat"><div class="k">Round Saat Ini</div><div class="v" id="w-round">–</div><div class="s" id="w-round-sub"></div></div>
+              <div class="stat"><div class="k">Lifetime Paid</div><div class="v" id="w-paid">–</div><div class="s">SQK yang sudah pernah dibayarkan</div></div>
+            </div>
+            <div id="w-token-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Profile import -->
+      <section id="profil">
+        <div class="sec-head"><span class="step">2</span><h2>Profil Genesis Kamu</h2></div>
+        <p class="sec-sub">Lihat Aura, rank, dan progres tier dari profil Genesis kamu. Endpoint profil cuma mengizinkan origin squeekchain.com, jadi fetch langsung dari halaman ini diblokir browser — solusinya: buka link JSON-nya, salin isinya, lalu tempel di sini.</p>
+        <div class="card">
+          <div class="row">
+            <input type="text" id="profile-code" placeholder="Kode referral Genesis kamu, mis. nwaqkhau" autocomplete="off" spellcheck="false" aria-label="Kode referral Genesis" />
+            <button type="button" class="ghost" id="profile-open">Buka JSON Profil ↗</button>
+          </div>
+          <p class="hint">Link yang dibuka: <code id="profile-url">https://community.squeekchain.com/v1/community/profiles/{code}</code> — salin semua isi halamannya, tempel ke kotak di bawah.</p>
+          <div class="row" style="margin-top:12px">
+            <textarea id="profile-json" placeholder='Tempel JSON profil di sini, mulai dari { "code": … }' aria-label="JSON profil Genesis"></textarea>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <button type="button" id="profile-load">Muat Profil</button>
+            <button type="button" class="ghost" id="profile-demo">Pakai Demo (snapshot 7 Nov 2026)</button>
+          </div>
+          <div class="status" id="profile-status" role="status"></div>
+          <div id="profile-result" class="hidden">
+            <div class="profile-head" style="margin-top:16px">
+              <div class="avatar" id="p-initial">?</div>
+              <div>
+                <div class="name" id="p-name">–</div>
+                <div class="handle" id="p-handle">–</div>
+              </div>
+            </div>
+            <div class="stats">
+              <div class="stat"><div class="k">Aura</div><div class="v" id="p-aura">–</div><div class="s" id="p-aura-sub"></div></div>
+              <div class="stat"><div class="k">Rank</div><div class="v" id="p-rank">–</div><div class="s" id="p-rank-sub"></div></div>
+              <div class="stat"><div class="k">Tier Sekarang</div><div class="v" id="p-tier">–</div><div class="s">Genesis Aura tier</div></div>
+              <div class="stat"><div class="k">Referral Selesai</div><div class="v" id="p-refs">–</div><div class="s">completedReferrals</div></div>
+            </div>
+            <div class="subhead" id="p-next-title">Tier Berikutnya</div>
+            <div class="tierbar"><div id="p-next-bar" style="width:0%"></div></div>
+            <p class="hint" id="p-next-text" style="margin-top:8px"></p>
+            <div class="subhead">Achievements</div>
+            <div class="ach-list" id="p-achievements"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Badge checklist -->
+      <section id="badges">
+        <div class="sec-head"><span class="step">3</span><h2>Checklist Badge Aura</h2></div>
+        <p class="sec-sub">Seluruh katalog badge resmi dari Squeekchain, dikelompokkan per lane. Centang badge yang lagi kamu kejar atau sudah kamu rencanakan — centangan tersimpan di browser ini (localStorage), jadi tetap ada pas kamu balik lagi. Kalau profil dimuat di langkah 2, badge yang sudah kamu miliki ikut ditandai hijau.</p>
+        <div class="progress-line">
+          <span class="count" id="badge-progress">Memuat katalog…</span>
+          <div class="bar"><div id="badge-bar"></div></div>
+          <button type="button" class="ghost" id="badge-reset">Reset Centang</button>
+        </div>
+        <div class="status err" id="badge-status" role="status"></div>
+        <div id="badge-groups"></div>
+      </section>
+
+      <!-- 4. Leaderboard -->
+      <section id="leaderboard">
+        <div class="sec-head"><span class="step">4</span><h2>Leaderboard &amp; Statistik</h2></div>
+        <p class="sec-sub">Konteks buat ngukur posisi kamu: 10 member dengan Aura tertinggi saat ini, plus total komunitas Genesis.</p>
+        <div class="stats" id="community-stats">
+          <div class="stat"><div class="k">Total Member</div><div class="v" id="s-members">…</div><div class="s">Genesis members</div></div>
+          <div class="stat"><div class="k">Total Aura</div><div class="v" id="s-aura">…</div><div class="s">Seluruh komunitas</div></div>
+          <div class="stat"><div class="k">Badge Earned</div><div class="v" id="s-badges">…</div><div class="s">Badge yang sudah diraih member</div></div>
+          <div class="stat"><div class="k">Projects Verified</div><div class="v" id="s-projects">…</div><div class="s">Project Code path terverifikasi</div></div>
+        </div>
+        <div class="status err" id="lb-status" role="status"></div>
+        <div class="lb" id="lb-list"></div>
+      </section>
+
+      <footer>
+        <h2>Apa itu Squeekchain?</h2>
+        <p>Squeekchain adalah blockchain bertema hamster yang lagi jalan di Sepolia testnet. Program Genesis-nya ngasih Aura — poin reputasi — ke member yang aktif: ngundang teman dan ngumpulin badge (lane <i>clout</i>), ngebangun dan submit project (lane <i>code</i>), atau megang koleksi partner (lane <i>holder</i>). Aura nentuin tier dan posisi kamu di leaderboard menjelang Genesis whitelist freeze. Tool ini bantu kamu mantau semuanya dari satu halaman, tanpa connect wallet.</p>
+        <p>Sumber data (semua publik &amp; read-only):</p>
+        <ul>
+          <li>Wallet: <a href="https://api.squeekchain.com/v1/accounts/0x4588FA5148FdcCf2D74856037c71CaBE662087BC" target="_blank" rel="noopener">api.squeekchain.com/v1/accounts/{address}</a></li>
+          <li>Katalog badge: <a href="https://community.squeekchain.com/v1/community/aura/badges" target="_blank" rel="noopener">community.squeekchain.com/v1/community/aura/badges</a></li>
+          <li>Leaderboard: <a href="https://community.squeekchain.com/v1/community/leaderboard" target="_blank" rel="noopener">community.squeekchain.com/v1/community/leaderboard</a></li>
+          <li>Statistik: <a href="https://community.squeekchain.com/v1/community/stats" target="_blank" rel="noopener">community.squeekchain.com/v1/community/stats</a></li>
+          <li>Profil: <a href="https://community.squeekchain.com/v1/community/profiles/nwaqkhau" target="_blank" rel="noopener">community.squeekchain.com/v1/community/profiles/{code}</a> (origin-locked, makanya ditempel manual)</li>
+          <li>Situs resmi: <a href="https://squeekchain.com/genesis" target="_blank" rel="noopener">squeekchain.com/genesis</a></li>
+        </ul>
+        <p class="foot-note">Halaman ini statis dan tidak mengirim data ke mana pun selain API publik di atas. Alamat wallet dan JSON profil yang kamu tempel cuma diproses di browser kamu sendiri.</p>
+      </footer>
+
+    </div>
+
+    <script>
+      "use strict";
+      var API_ACCOUNTS = "https://api.squeekchain.com/v1/accounts/";
+      var API_COMMUNITY = "https://community.squeekchain.com/v1/community";
+      var LS_KEY = "squeek-aura-checklist:ticked:v1";
+      var DEMO_WALLET = "0x4588FA5148FdcCf2D74856037c71CaBE662087BC";
+
+      function $(id) { return document.getElementById(id); }
+      function esc(s) {
+        return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      }
+      function fmtID(n) {
+        var v = Number(n);
+        return isNaN(v) ? String(n) : v.toLocaleString("id-ID");
+      }
+      // Base units (18 decimals) -> readable SQK, max 4 fraction digits.
+      function fmtSQK(base) {
+        try {
+          var v = BigInt(String(base));
+          var neg = v < 0n; if (neg) v = -v;
+          var whole = v / 1000000000000000000n;
+          var frac = (v % 1000000000000000000n).toString().padStart(18, "0").slice(0, 4).replace(/0+$/, "");
+          return (neg ? "-" : "") + whole.toLocaleString("id-ID") + (frac ? "," + frac : "");
+        } catch (e) { return String(base); }
+      }
+      function getJSON(url) {
+        return fetch(url, { headers: { "Accept": "application/json" } }).then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        });
+      }
+      function setStatus(el, msg, kind) {
+        el.textContent = msg || "";
+        el.className = "status" + (kind ? " " + kind : "");
+      }
+
+      /* ---------------- 1. Wallet dashboard ---------------- */
+      var walletForm = $("wallet-form");
+      walletForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        loadWallet($("wallet-input").value.trim());
+      });
+      $("wallet-demo").addEventListener("click", function () {
+        $("wallet-input").value = DEMO_WALLET;
+        loadWallet(DEMO_WALLET);
+      });
+
+      function loadWallet(addr) {
+        var st = $("wallet-status");
+        if (!/^0x[0-9a-fA-F]{40}$/.test(addr)) {
+          setStatus(st, "Alamat tidak valid — harus 0x diikuti 40 karakter hex.", "err");
+          return;
+        }
+        var btn = $("wallet-btn");
+        btn.disabled = true;
+        setStatus(st, "Mengambil data wallet dari API Squeekchain…");
+        $("wallet-result").classList.add("hidden");
+        getJSON(API_ACCOUNTS + addr).then(function (d) {
+          renderWallet(d);
+          setStatus(st, "Data wallet berhasil dimuat.", "ok");
+        }).catch(function (err) {
+          setStatus(st, "Gagal memuat wallet (" + err.message + "). Alamat mungkin belum terdaftar di Squeekchain Sepolia, atau API sedang gangguan — coba lagi sebentar.", "err");
+        }).finally(function () { btn.disabled = false; });
+      }
+
+      function renderWallet(d) {
+        $("w-address").textContent = d.account || "";
+        var when = d.generatedAt ? new Date(d.generatedAt).toLocaleString("id-ID", { dateStyle: "medium", timeStyle: "short" }) : "";
+        $("w-meta").textContent = "Sepolia (chainId " + (d.chain && d.chain.chainId || "11155111") + ")" +
+          (d.chain && d.chain.indexedThroughBlock ? " · terindeks s/d block " + fmtID(d.chain.indexedThroughBlock) : "") +
+          (when ? " · data per " + when : "");
+        var rw = d.rewards || {}, pw = d.power || {}, sk = d.stake || {}, tc = d.tokenCounts || {}, ec = d.economy || {};
+        $("w-claimable").textContent = fmtSQK(rw.claimableBaseUnits || "0") + " SQK";
+        $("w-claimable-raw").textContent = (rw.claimableBaseUnits || "0") + " base units";
+        var totalPower = (Number(pw.nftPower) || 0) + (Number(pw.sqkPower) || 0);
+        $("w-power").textContent = fmtID(totalPower);
+        $("w-power-sub").textContent = "NFT power " + fmtID(pw.nftPower || 0) + " · SQK power " + fmtID(pw.sqkPower || 0);
+        $("w-stake").textContent = fmtSQK(sk.principalBaseUnits || "0") + " SQK";
+        $("w-stake-sub").textContent = "Fresh " + fmtSQK(sk.freshBaseUnits || "0") + " · Mature " + fmtSQK(sk.matureBaseUnits || "0") +
+          (ec.stakingPaused ? " · staking lagi pause" : "");
+        $("w-tokens").textContent = fmtID(tc.wallet || 0);
+        $("w-tokens-sub").textContent = fmtID(tc.staking || 0) + " token lagi di-stake";
+        $("w-round").textContent = ec.currentRound != null ? "#" + fmtID(ec.currentRound) : "–";
+        $("w-round-sub").textContent = "Core block height " + fmtID(ec.coreBlockHeight || 0) + " · max level " + (ec.maximumLevel || "–") +
+          (ec.mergesOpen ? " · merges open" : " · merges closed");
+        $("w-paid").textContent = fmtSQK(rw.lifetimePaidBaseUnits || "0") + " SQK";
+        var list = $("w-token-list");
+        if (Array.isArray(d.tokens) && d.tokens.length) {
+          var html = '<div class="subhead">Token yang dimiliki</div><div class="ach-list">';
+          d.tokens.forEach(function (t) {
+            var label = t.name || t.title || ("Token #" + (t.tokenId != null ? t.tokenId : (t.id != null ? t.id : "?")));
+            var extra = [];
+            if (t.level != null) extra.push("level " + t.level);
+            if (t.power != null) extra.push("power " + fmtID(t.power));
+            html += '<span class="ach earned">' + esc(label) + (extra.length ? " · " + esc(extra.join(" · ")) : "") + "</span>";
+          });
+          list.innerHTML = html + "</div>";
+        } else {
+          list.innerHTML = "";
+        }
+        $("wallet-result").classList.remove("hidden");
+      }
+
+      /* ---------------- 2. Profile import ---------------- */
+      var DEMO_PROFILE = {
+        code: "nwaqkhau", valid: true,
+        identity: { kind: "x", username: "bexyybois", name: "bexyy" },
+        standing: { rank: 16931, aura: 197, tier: null, next: { tier: "member", auraNeeded: 110 }, movement: -1108 },
+        completedReferrals: 0,
+        achievements: [
+          { id: "clout.signed_up", title: "Signed Up" },
+          { id: "code.the_tester", title: "The Tester" }
+        ],
+        snapshot: { members: 51801, computedAt: "2026-11-07T11:24:25.121Z" },
+        _demoNote: "Snapshot publik per 7 Nov 2026"
+      };
+      var earnedIds = {}; // badgeId -> true, from loaded profile
+
+      function profileUrl(code) { return API_COMMUNITY + "/profiles/" + encodeURIComponent(code || "{code}"); }
+      $("profile-code").addEventListener("input", function () {
+        $("profile-url").textContent = profileUrl(this.value.trim());
+      });
+      $("profile-open").addEventListener("click", function () {
+        var code = $("profile-code").value.trim();
+        if (!code) { setStatus($("profile-status"), "Isi dulu kode referral Genesis kamu.", "err"); return; }
+        window.open(profileUrl(code), "_blank", "noopener");
+        setStatus($("profile-status"), "Tab JSON profil kebuka — salin semua isinya (Ctrl/Cmd+A, lalu Ctrl/Cmd+C), tempel ke kotak di bawah, lalu klik Muat Profil.");
+      });
+      $("profile-load").addEventListener("click", function () {
+        var raw = $("profile-json").value.trim();
+        if (!raw) { setStatus($("profile-status"), "Kotak JSON masih kosong — tempel dulu JSON profilnya, atau pakai tombol demo.", "err"); return; }
+        var data;
+        try { data = JSON.parse(raw); }
+        catch (e) { setStatus($("profile-status"), "JSON tidak valid (" + e.message + "). Pastikan menyalin seluruh isi halaman profil, dari kurung { pertama sampai } terakhir.", "err"); return; }
+        renderProfile(data, null);
+      });
+      $("profile-demo").addEventListener("click", function () {
+        $("profile-code").value = DEMO_PROFILE.code;
+        $("profile-url").textContent = profileUrl(DEMO_PROFILE.code);
+        renderProfile(DEMO_PROFILE, DEMO_PROFILE._demoNote);
+      });
+
+      function renderProfile(d, note) {
+        var st = $("profile-status");
+        if (!d || typeof d !== "object" || !d.standing) {
+          setStatus(st, "JSON terbaca, tapi bentuknya bukan profil Genesis (field \"standing\" tidak ditemukan). Cek lagi halaman yang kamu salin.", "err");
+          return;
+        }
+        if (d.valid === false) {
+          setStatus(st, "Kode profil ini tidak valid (valid: false).", "err");
+          return;
+        }
+        var idn = d.identity || {}, s = d.standing || {};
+        earnedIds = {};
+        (d.achievements || []).forEach(function (a) { if (a && a.id) earnedIds[a.id] = true; });
+
+        $("p-initial").textContent = (idn.name || idn.username || "?").charAt(0).toUpperCase();
+        $("p-name").textContent = idn.name || idn.username || "(tanpa nama)";
+        $("p-handle").textContent = (idn.kind === "x" && idn.username ? "X @" + idn.username : (idn.username || "")) +
+          (d.code ? " · kode " + d.code : "");
+        $("p-aura").textContent = fmtID(s.aura || 0);
+        $("p-aura-sub").textContent = note ? note : "dari JSON yang kamu tempel";
+        var total = d.snapshot && d.snapshot.members;
+        $("p-rank").textContent = s.rank != null ? "#" + fmtID(s.rank) : "–";
+        $("p-rank-sub").textContent = total ? "dari " + fmtID(total) + " member" : "peringkat Genesis";
+        $("p-tier").textContent = s.tier ? s.tier : "none";
+        $("p-refs").textContent = fmtID(d.completedReferrals || 0);
+        if (s.next && s.next.tier) {
+          var aura = Number(s.aura) || 0, need = Number(s.next.auraNeeded) || 0;
+          var pct = (aura + need) > 0 ? Math.round(aura / (aura + need) * 100) : 100;
+          $("p-next-title").textContent = "Menuju Tier \"" + s.next.tier + "\"";
+          $("p-next-bar").style.width = pct + "%";
+          $("p-next-text").textContent = "Butuh " + fmtID(need) + " Aura lagi buat naik ke tier " + s.next.tier +
+            " — progres sekarang " + pct + "% (" + fmtID(aura) + " dari " + fmtID(aura + need) + " Aura)." +
+            (s.movement ? " Pergerakan rank terakhir: " + (s.movement > 0 ? "naik " : "turun ") + fmtID(Math.abs(s.movement)) + " peringkat." : "");
+        } else {
+          $("p-next-title").textContent = "Tier Berikutnya";
+          $("p-next-bar").style.width = "100%";
+          $("p-next-text").textContent = "Sudah di tier tertinggi atau belum ada tier berikutnya.";
+        }
+        var ach = $("p-achievements");
+        if ((d.achievements || []).length) {
+          ach.innerHTML = d.achievements.map(function (a) {
+            var holders = a.rarity && a.rarity.holders != null ? " · " + fmtID(a.rarity.holders) + " holders" : "";
+            return '<span class="ach earned">✓ ' + esc(a.title || a.id) + esc(holders) + "</span>";
+          }).join("");
+        } else {
+          ach.innerHTML = '<span class="ach">Belum ada achievement</span>';
+        }
+        $("profile-result").classList.remove("hidden");
+        setStatus(st, note ? "Profil demo dimuat (" + note.toLowerCase() + "). Badge yang dimiliki sudah ditandai di checklist di bawah." :
+          "Profil berhasil dimuat. Badge yang kamu miliki sudah ditandai di checklist di bawah.", "ok");
+        if (typeof renderBadges === "function" && badgeCatalog.length) renderBadges();
+      }
+
+      /* ---------------- 3. Badge checklist ---------------- */
+      var badgeCatalog = [];
+      var ticked = {};
+      try { ticked = JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; } catch (e) { ticked = {}; }
+      var LANE_LABEL = { clout: "Clout — sosial & referral", code: "Code — bangun & submit project", holder: "Holder — koleksi partner" };
+      var LANE_ORDER = ["clout", "code", "holder"];
+
+      function saveTicks() {
+        try { localStorage.setItem(LS_KEY, JSON.stringify(ticked)); } catch (e) { /* private mode: ticks just won't persist */ }
+      }
+      function updateProgress() {
+        var total = badgeCatalog.length;
+        var done = badgeCatalog.filter(function (b) { return ticked[b.id]; }).length;
+        $("badge-progress").textContent = total ? done + " dari " + total + " badge ditandai" : "Katalog badge belum termuat";
+        $("badge-bar").style.width = total ? (done / total * 100) + "%" : "0%";
+      }
+      function renderBadges() {
+        var host = $("badge-groups");
+        var lanes = {};
+        badgeCatalog.forEach(function (b) { (lanes[b.lane] = lanes[b.lane] || []).push(b); });
+        var order = LANE_ORDER.concat(Object.keys(lanes).filter(function (l) { return LANE_ORDER.indexOf(l) < 0; }));
+        var html = "";
+        order.forEach(function (lane) {
+          var items = lanes[lane];
+          if (!items || !items.length) return;
+          html += '<div class="lane-title"><h3>' + esc(lane) + '</h3><span>' + esc(LANE_LABEL[lane] || "") + " · " + items.length + ' badge</span></div><div class="badge-grid">';
+          items.forEach(function (b) {
+            var crit = (b.criteria || []).map(function (c) {
+              return "<li" + (c.detail ? ' title="' + esc(c.detail) + '"' : "") + ">" + esc(c.label) + "</li>";
+            }).join("");
+            var pct = b.rarity && b.rarity.heldByBps != null ? " · " + (b.rarity.heldByBps / 100).toLocaleString("id-ID", { maximumFractionDigits: 1 }) + "% member" : "";
+            html += '<div class="badge' + (ticked[b.id] ? " ticked" : "") + (earnedIds[b.id] ? " earned" : "") + '">' +
+              '<input type="checkbox" data-badge="' + esc(b.id) + '"' + (ticked[b.id] ? " checked" : "") + ' aria-label="Tandai badge ' + esc(b.title) + '" />' +
+              '<div class="body"><div class="title">' + esc(b.title) +
+              (b.trophy ? ' <span class="tag trophy">TROPHY</span>' : "") +
+              (earnedIds[b.id] ? ' <span class="tag owned">SUDAH DIDAPAT</span>' : "") +
+              '</div><div class="desc">' + esc(b.description || b.instruction || "") + "</div>" +
+              (crit ? "<ul>" + crit + "</ul>" : "") +
+              '<div class="holders"><b>' + fmtID(b.rarity ? b.rarity.holders : 0) + "</b> holders" + pct + "</div>" +
+              "</div></div>";
+          });
+          html += "</div>";
+        });
+        host.innerHTML = html;
+        host.querySelectorAll("input[data-badge]").forEach(function (cb) {
+          cb.addEventListener("change", function () {
+            var id = cb.getAttribute("data-badge");
+            if (cb.checked) ticked[id] = true; else delete ticked[id];
+            saveTicks();
+            cb.closest(".badge").classList.toggle("ticked", cb.checked);
+            updateProgress();
+          });
+        });
+        updateProgress();
+      }
+
+      function loadBadges() {
+        getJSON(API_COMMUNITY + "/aura/badges").then(function (d) {
+          badgeCatalog = (d && d.badges) || [];
+          if (!badgeCatalog.length) throw new Error("katalog kosong");
+          setStatus($("badge-status"), "");
+          renderBadges();
+        }).catch(function (err) {
+          $("badge-progress").textContent = "Katalog badge gagal dimuat";
+          setStatus($("badge-status"), "Gagal mengambil katalog badge (" + err.message + "). Cek koneksi lalu muat ulang halaman.", "err");
+        });
+      }
+      $("badge-reset").addEventListener("click", function () {
+        ticked = {};
+        saveTicks();
+        renderBadges();
+      });
+
+      /* ---------------- 4. Leaderboard & stats ---------------- */
+      function loadLeaderboard() {
+        getJSON(API_COMMUNITY + "/leaderboard").then(function (d) {
+          var entries = ((d && d.entries) || []).slice(0, 10);
+          $("lb-list").innerHTML = entries.map(function (e) {
+            var idn = e.identity || {};
+            var name = idn.name || idn.username || e.code || "?";
+            return '<div class="lb-row"><div class="lb-rank">' + esc(e.rank) + '</div>' +
+              '<div class="lb-id"><div class="n">' + esc(name) +
+              (e.tier ? '<span class="tier-chip">' + esc(e.tier) + "</span>" : "") +
+              '</div><div class="u">' + (idn.username ? "@" + esc(idn.username) : "") + " · kode " + esc(e.code || "") + '</div></div>' +
+              '<div class="lb-meta"><div class="aura">' + fmtID(e.aura || 0) + ' Aura</div><div class="sub">' + fmtID(e.badges || 0) + ' badge</div></div></div>';
+          }).join("");
+          if (!entries.length) setStatus($("lb-status"), "Leaderboard kosong dari API.", "err");
+        }).catch(function (err) {
+          setStatus($("lb-status"), "Gagal mengambil leaderboard (" + err.message + ").", "err");
+        });
+        getJSON(API_COMMUNITY + "/stats").then(function (d) {
+          $("s-members").textContent = fmtID(d.members || 0);
+          $("s-aura").textContent = fmtID(d.totalAura || 0);
+          $("s-badges").textContent = fmtID(d.badgesEarned || 0);
+          $("s-projects").textContent = fmtID(d.projectsVerified || 0);
+        }).catch(function () {
+          $("s-members").textContent = "–";
+        });
+      }
+
+      loadBadges();
+      loadLeaderboard();
+    </script>
+  </body>
+</html>
